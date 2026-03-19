@@ -1,0 +1,131 @@
+/* MeetMind in-meeting overlay panel */
+#meetmind-panel {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 260px;
+  background: rgba(13, 15, 20, 0.95);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(91, 142, 255, 0.3);
+  border-radius: 14px;
+  z-index: 999999;
+  font-family: 'DM Mono', monospace, sans-serif;
+  font-size: 12px;
+  color: #e8eaf0;
+  box-shadow: 0 8px 40px rgba(91, 142, 255, 0.2), 0 2px 8px rgba(0,0,0,.5);
+  overflow: hidden;
+  transition: all 0.25s ease;
+}
+
+#meetmind-panel.minimized .mm-body {
+  display: none;
+}
+
+.mm-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  background: rgba(21,25,33,0.8);
+}
+
+.mm-logo {
+  font-weight: 700;
+  font-size: 13px;
+  background: linear-gradient(135deg, #5b8eff, #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.mm-badge {
+  font-size: 10px;
+  color: #34d399;
+  animation: blink 1.4s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.mm-close {
+  background: none;
+  border: none;
+  color: #7a8199;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 2px 4px;
+  border-radius: 4px;
+  line-height: 1;
+}
+.mm-close:hover { color: #e8eaf0; }
+
+.mm-body {
+  padding: 10px 12px;
+}
+
+.mm-status {
+  font-size: 11px;
+  color: #7a8199;
+  margin-bottom: 8px;
+}
+
+.mm-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.mm-btn {
+  background: linear-gradient(135deg, #5b8eff, #a78bfa);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 7px;
+  font-family: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  transition: opacity .15s;
+}
+.mm-btn:hover { opacity: .85; }
+
+.mm-btn.mm-ghost {
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.1);
+  color: #7a8199;
+}
+.mm-btn.mm-ghost:hover { color: #e8eaf0; }
+
+.mm-transcript { margin-top: 4px; }
+
+.mm-t-label {
+  font-size: 9px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #7a8199;
+  margin-bottom: 5px;
+}
+
+.mm-t-items {
+  max-height: 100px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.mm-t-item {
+  font-size: 11px;
+  color: #c5c9d6;
+  padding: 3px 0;
+  border-bottom: 1px solid rgba(255,255,255,.04);
+  animation: slide-in 0.3s ease;
+}
+
+@keyframes slide-in {
+  from { opacity: 0; transform: translateX(8px); }
+  to { opacity: 1; transform: translateX(0); }
+}

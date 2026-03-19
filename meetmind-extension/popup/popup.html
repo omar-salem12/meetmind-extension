@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MeetMind</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div class="shell">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">
+        <span class="logo-mark">◈</span>
+        <span class="logo-text">MeetMind</span>
+      </div>
+      <div class="status-pill" id="statusPill">
+        <span class="status-dot"></span>
+        <span id="statusLabel">Connecting…</span>
+      </div>
+    </header>
+
+    <!-- Auth gate -->
+    <div class="screen" id="screenAuth">
+      <div class="hero-icon">🗓</div>
+      <h2>Calendar Intelligence,<br/>in your browser</h2>
+      <p class="sub">Connect your Google account so MeetMind can read your calendar, join meetings, and generate AI-powered notes — powered by Airia agents.</p>
+      <button class="btn btn-primary" id="btnConnectGoogle">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M17.64 9.2a10.3 10.3 0 00-.163-1.84H9v3.48h4.84a4.14 4.14 0 01-1.8 2.72v2.26h2.91c1.7-1.57 2.69-3.88 2.69-6.62z" fill="#4285F4"/><path d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.91-2.26c-.8.54-1.83.86-3.05.86-2.34 0-4.33-1.58-5.04-3.71H.96v2.34A9 9 0 009 18z" fill="#34A853"/><path d="M3.96 10.71A5.41 5.41 0 013.68 9c0-.59.1-1.17.28-1.71V4.95H.96A9 9 0 000 9c0 1.45.35 2.82.96 4.05l3-2.34z" fill="#FBBC05"/><path d="M9 3.58c1.32 0 2.51.45 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0A9 9 0 00.96 4.95l3 2.34C4.67 5.16 6.66 3.58 9 3.58z" fill="#EA4335"/></svg>
+        Sign in with Google
+      </button>
+      <div class="divider">or</div>
+      <button class="btn btn-ghost" id="btnDemo">✨ Try with demo data</button>
+    </div>
+
+    <!-- Main dashboard -->
+    <div class="screen hidden" id="screenDash">
+
+      <!-- User row -->
+      <div class="user-row">
+        <div class="avatar" id="userAvatar">?</div>
+        <div class="user-info">
+          <div class="user-name" id="userName">Loading…</div>
+          <div class="user-email" id="userEmail"></div>
+        </div>
+        <button class="icon-btn" id="btnLogout" title="Sign out">⏏</button>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab active" data-tab="upcoming">Upcoming</button>
+        <button class="tab" data-tab="notes">Notes</button>
+        <button class="tab" data-tab="actions">Actions</button>
+      </div>
+
+      <!-- Tab: Upcoming meetings -->
+      <div class="tab-content" id="tabUpcoming">
+        <div class="section-label">Today's Meetings</div>
+        <div id="meetingsList" class="meetings-list">
+          <div class="loading-row">
+            <span class="spinner"></span> Fetching calendar…
+          </div>
+        </div>
+        <button class="btn btn-outline full-width mt-8" id="btnRefreshCalendar">↻ Refresh calendar</button>
+      </div>
+
+      <!-- Tab: Notes -->
+      <div class="tab-content hidden" id="tabNotes">
+        <div class="section-label">Recent Meeting Notes</div>
+        <div id="notesList" class="notes-list">
+          <div class="empty-state">No notes yet. Notes appear here after a meeting ends.</div>
+        </div>
+      </div>
+
+      <!-- Tab: Action items -->
+      <div class="tab-content hidden" id="tabActions">
+        <div class="section-label">Open Action Items</div>
+        <div id="actionsList" class="actions-list">
+          <div class="empty-state">No open actions yet.</div>
+        </div>
+        <button class="btn btn-outline full-width mt-8" id="btnEmailActions">📧 Email digest to me</button>
+      </div>
+
+    </div>
+
+    <!-- Note detail overlay -->
+    <div class="overlay hidden" id="noteOverlay">
+      <div class="overlay-header">
+        <button class="icon-btn" id="btnCloseOverlay">← Back</button>
+        <button class="icon-btn" id="btnCopyNote" title="Copy note">⧉ Copy</button>
+      </div>
+      <div class="overlay-title" id="overlayTitle"></div>
+      <div class="overlay-meta" id="overlayMeta"></div>
+      <div class="overlay-body" id="overlayBody"></div>
+    </div>
+
+    <!-- Generate notes modal -->
+    <div class="modal-backdrop hidden" id="generateModal">
+      <div class="modal">
+        <div class="modal-icon">🤖</div>
+        <div class="modal-title" id="modalMeetingTitle">Generating notes…</div>
+        <div class="modal-status" id="modalStatus">Invoking Airia agent…</div>
+        <div class="progress-track">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="modal-steps" id="modalSteps"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

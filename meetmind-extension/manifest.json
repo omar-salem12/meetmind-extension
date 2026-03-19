@@ -1,0 +1,57 @@
+{
+  "manifest_version": 3,
+  "name": "MeetMind – AI Meeting Intelligence",
+  "version": "1.0.0",
+  "description": "AI-powered meeting notes, summaries & action items — powered by Airia agents, live in your browser.",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "identity",
+    "alarms"
+  ],
+  "host_permissions": [
+    "https://calendar.google.com/*",
+    "https://meet.google.com/*",
+    "https://zoom.us/*",
+    "https://teams.microsoft.com/*",
+    "https://*.airia.com/*",
+    "https://api.anthropic.com/*",
+    "https://gmail.googleapis.com/*",
+    "https://www.googleapis.com/*"
+  ],
+  "background": {
+    "service_worker": "background/service_worker.js",
+    "scripts": ["background/email_sender.js"]
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://meet.google.com/*", "https://zoom.us/*", "https://teams.microsoft.com/*"],
+      "js": ["content/meeting_injector.js"],
+      "css": ["content/overlay.css"]
+    },
+    {
+      "matches": ["https://calendar.google.com/*"],
+      "js": ["content/calendar_injector.js"]
+    }
+  ],
+  "options_page": "options/options.html",
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["popup/*", "content/*"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

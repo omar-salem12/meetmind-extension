@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MeetMind – Airia Hackathon 2025</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --acc: #5b8eff; --acc2: #a78bfa; --grn: #34d399;
+      --bg: #07090d; --s1: #0f1117; --s2: #161b26;
+      --bd: rgba(255,255,255,.07); --tx: #e8eaf0; --mu: #7a8199;
+      --fh: 'Syne', sans-serif; --fm: 'DM Mono', monospace;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--tx); font-family: var(--fm); overflow-x: hidden; }
+
+    /* ── Nav ── */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 14px 5vw; display: flex; align-items: center; justify-content: space-between; background: rgba(7,9,13,.85); backdrop-filter: blur(14px); border-bottom: 1px solid var(--bd); }
+    .nav-logo { font-family: var(--fh); font-weight: 800; font-size: 20px; display: flex; align-items: center; gap: 8px; }
+    .nav-mark { background: linear-gradient(135deg, var(--acc), var(--acc2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 24px; }
+    .nav-links { display: flex; gap: 28px; font-size: 13px; color: var(--mu); }
+    .nav-links a { color: var(--mu); text-decoration: none; transition: color .15s; }
+    .nav-links a:hover { color: var(--tx); }
+    .nav-cta { background: linear-gradient(135deg, var(--acc), var(--acc2)); color: #fff; border: none; border-radius: 7px; padding: 8px 18px; font-family: var(--fm); font-size: 12px; cursor: pointer; text-decoration: none; }
+
+    /* ── Hero ── */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 120px 5vw 80px; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; width: 700px; height: 700px; border-radius: 50%; background: radial-gradient(circle, rgba(91,142,255,.12) 0%, transparent 70%); top: 50%; left: 50%; transform: translate(-50%, -60%); pointer-events: none; }
+    .track-pill { display: inline-flex; align-items: center; gap: 6px; background: rgba(91,142,255,.1); border: 1px solid rgba(91,142,255,.25); border-radius: 999px; padding: 5px 14px; font-size: 11px; color: var(--acc); margin-bottom: 24px; }
+    .track-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--acc); }
+    h1 { font-family: var(--fh); font-size: clamp(40px, 7vw, 80px); font-weight: 800; line-height: 1.05; letter-spacing: -2px; margin-bottom: 20px; }
+    h1 span { background: linear-gradient(135deg, var(--acc), var(--acc2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero-sub { font-size: clamp(14px, 2vw, 17px); color: var(--mu); max-width: 600px; line-height: 1.75; margin-bottom: 36px; }
+    .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+    .btn-hero { padding: 13px 28px; border-radius: 9px; font-family: var(--fm); font-size: 13px; cursor: pointer; border: none; text-decoration: none; transition: all .18s; }
+    .btn-primary-hero { background: linear-gradient(135deg, var(--acc), var(--acc2)); color: #fff; box-shadow: 0 6px 28px rgba(91,142,255,.35); }
+    .btn-primary-hero:hover { transform: translateY(-2px); box-shadow: 0 10px 36px rgba(91,142,255,.5); }
+    .btn-ghost-hero { background: transparent; color: var(--mu); border: 1px solid var(--bd); }
+    .btn-ghost-hero:hover { background: var(--s1); color: var(--tx); }
+
+    /* ── Section ── */
+    section { padding: 80px 5vw; }
+    .section-label { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--acc); margin-bottom: 10px; text-align: center; }
+    .section-title { font-family: var(--fh); font-size: clamp(28px, 4vw, 44px); font-weight: 800; text-align: center; letter-spacing: -1px; margin-bottom: 12px; }
+    .section-sub { font-size: 14px; color: var(--mu); text-align: center; max-width: 540px; margin: 0 auto 52px; line-height: 1.7; }
+
+    /* ── Features ── */
+    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; max-width: 1100px; margin: 0 auto; }
+    .feat-card { background: var(--s1); border: 1px solid var(--bd); border-radius: 14px; padding: 24px; transition: border-color .2s, transform .15s; }
+    .feat-card:hover { border-color: rgba(91,142,255,.3); transform: translateY(-3px); }
+    .feat-icon { font-size: 32px; margin-bottom: 14px; }
+    .feat-title { font-family: var(--fh); font-weight: 700; font-size: 16px; margin-bottom: 7px; }
+    .feat-desc { font-size: 12px; color: var(--mu); line-height: 1.7; }
+
+    /* ── How it works ── */
+    .how-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0; max-width: 900px; margin: 0 auto; position: relative; }
+    .how-grid::before { content: ''; position: absolute; top: 30px; left: calc(100%/8); right: calc(100%/8); height: 1px; background: linear-gradient(90deg, transparent, var(--acc), var(--acc2), transparent); opacity: .3; }
+    .how-step { text-align: center; padding: 24px 16px; }
+    .step-num { width: 52px; height: 52px; border-radius: 50%; background: var(--s2); border: 1px solid rgba(91,142,255,.25); display: flex; align-items: center; justify-content: center; font-family: var(--fh); font-weight: 800; font-size: 18px; margin: 0 auto 14px; color: var(--acc); }
+    .step-title { font-family: var(--fh); font-weight: 700; font-size: 14px; margin-bottom: 6px; }
+    .step-desc { font-size: 12px; color: var(--mu); line-height: 1.65; }
+
+    /* ── Pipeline ── */
+    .pipeline-wrap { max-width: 720px; margin: 0 auto; }
+    .pipe-node { display: flex; align-items: center; gap: 16px; background: var(--s1); border: 1px solid var(--bd); border-radius: 12px; padding: 16px 20px; margin-bottom: 8px; transition: border-color .15s; }
+    .pipe-node:hover { border-color: rgba(91,142,255,.3); }
+    .pipe-node-icon { width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+    .pn-gcal { background: rgba(66,133,244,.1); }
+    .pn-llm  { background: rgba(91,142,255,.1); }
+    .pn-out  { background: rgba(167,139,250,.1); }
+    .pn-gmail { background: rgba(234,67,53,.08); }
+    .pipe-node-info { flex: 1; }
+    .pn-title { font-family: var(--fh); font-weight: 700; font-size: 14px; }
+    .pn-sub { font-size: 11px; color: var(--mu); margin-top: 2px; }
+    .pn-badge { font-size: 10px; padding: 3px 10px; border-radius: 999px; background: var(--s2); color: var(--mu); border: 1px solid var(--bd); }
+    .pipe-arrow { text-align: center; color: var(--mu); font-size: 18px; margin: -2px 0; }
+
+    /* ── Stack ── */
+    .stack-grid { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; max-width: 700px; margin: 0 auto; }
+    .stack-pill { background: var(--s1); border: 1px solid var(--bd); border-radius: 999px; padding: 8px 18px; font-size: 13px; display: flex; align-items: center; gap: 8px; }
+    .stack-dot { width: 7px; height: 7px; border-radius: 50%; }
+
+    /* ── CTA ── */
+    .cta-section { background: linear-gradient(135deg, rgba(91,142,255,.07), rgba(167,139,250,.07)); border: 1px solid rgba(91,142,255,.15); border-radius: 20px; padding: 60px 40px; text-align: center; max-width: 700px; margin: 0 auto; }
+
+    /* ── Footer ── */
+    footer { padding: 32px 5vw; border-top: 1px solid var(--bd); display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--mu); }
+    footer a { color: var(--mu); text-decoration: none; }
+    footer a:hover { color: var(--tx); }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <div class="nav-logo"><span class="nav-mark">◈</span>MeetMind</div>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#pipeline">Pipeline</a>
+      <a href="#stack">Stack</a>
+    </div>
+    <a class="nav-cta" href="https://airia-hackathon.devpost.com" target="_blank">View on Devpost</a>
+  </nav>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="track-pill"><span class="track-dot"></span>Track 1: Airia Everywhere · Airia Hackathon 2025</div>
+    <h1>AI meeting notes,<br/><span>in your browser</span></h1>
+    <p class="hero-sub">MeetMind is a Chrome extension powered by Airia agents. It reads your Google Calendar, monitors live meetings, and automatically generates structured notes, decisions, and action items — without leaving your workflow.</p>
+    <div class="hero-btns">
+      <a class="btn-hero btn-primary-hero" href="#how">See how it works</a>
+      <a class="btn-hero btn-ghost-hero" href="https://github.com" target="_blank">GitHub ↗</a>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <section id="features">
+    <div class="section-label">What it does</div>
+    <div class="section-title">Everything you need<br/>from every meeting</div>
+    <p class="section-sub">MeetMind sits in your Chrome toolbar and connects your calendar, meetings, and email into one intelligent loop.</p>
+    <div class="features-grid">
+      <div class="feat-card"><div class="feat-icon">🗓</div><div class="feat-title">Calendar awareness</div><div class="feat-desc">Connects to Google Calendar via MCP. Sees your full day, classifies each meeting type (standup, review, planning), and preps the agent accordingly.</div></div>
+      <div class="feat-card"><div class="feat-icon">🤖</div><div class="feat-title">Airia agent pipeline</div><div class="feat-desc">5-step Airia agent pipeline: fetch → classify → generate notes → extract actions → deliver. Each step visible to the user in real time.</div></div>
+      <div class="feat-card"><div class="feat-icon">📋</div><div class="feat-title">Structured notes</div><div class="feat-desc">Every note includes an executive summary, key decisions, action items with owners, and clear next steps — formatted for sharing.</div></div>
+      <div class="feat-card"><div class="feat-icon">✅</div><div class="feat-title">Action item tracker</div><div class="feat-desc">Action items are extracted with assigned owners and tracked in the extension. Check them off as you complete them.</div></div>
+      <div class="feat-card"><div class="feat-icon">📧</div><div class="feat-title">Email digest via Gmail</div><div class="feat-desc">One click sends a beautiful HTML digest of open action items to your inbox using the Gmail MCP server.</div></div>
+      <div class="feat-card"><div class="feat-icon">🔴</div><div class="feat-title">Live meeting panel</div><div class="feat-desc">Injects a floating MeetMind panel into Google Meet, Zoom, and Teams pages during active calls with key point capture.</div></div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section id="how" style="background:var(--s1); border-top: 1px solid var(--bd); border-bottom: 1px solid var(--bd);">
+    <div class="section-label">Workflow</div>
+    <div class="section-title">From calendar to action items<br/>in seconds</div>
+    <p class="section-sub">MeetMind works where you already are — no new apps, no new tabs.</p>
+    <div class="how-grid">
+      <div class="how-step"><div class="step-num">1</div><div class="step-title">Connect Google</div><div class="step-desc">Sign in once. MeetMind gets read-only calendar access and send-only Gmail access.</div></div>
+      <div class="how-step"><div class="step-num">2</div><div class="step-title">See your day</div><div class="step-desc">Today's meetings appear instantly — with status badges for live, soon, and done.</div></div>
+      <div class="how-step"><div class="step-num">3</div><div class="step-title">Generate notes</div><div class="step-desc">Click "Generate notes" on any meeting. The Airia agent pipeline runs in ~3 seconds.</div></div>
+      <div class="how-step"><div class="step-num">4</div><div class="step-title">Act on it</div><div class="step-desc">Review structured notes, check off action items, or email a digest to your team.</div></div>
+    </div>
+  </section>
+
+  <!-- Pipeline -->
+  <section id="pipeline">
+    <div class="section-label">Architecture</div>
+    <div class="section-title">The Airia agent pipeline</div>
+    <p class="section-sub">Five nodes, two MCP integrations, one seamless experience in your browser toolbar.</p>
+    <div class="pipeline-wrap">
+      <div class="pipe-node"><div class="pipe-node-icon pn-gcal">🗓</div><div class="pipe-node-info"><div class="pn-title">Fetch calendar event</div><div class="pn-sub">Google Calendar MCP → event title, attendees, agenda, duration</div></div><span class="pn-badge">gcal.mcp.claude.com</span></div>
+      <div class="pipe-arrow">↓</div>
+      <div class="pipe-node"><div class="pipe-node-icon pn-llm">🔍</div><div class="pipe-node-info"><div class="pn-title">Classify meeting type</div><div class="pn-sub">Airia LLM node → standup / review / planning / 1-on-1 / external</div></div><span class="pn-badge">claude-sonnet-4</span></div>
+      <div class="pipe-arrow">↓</div>
+      <div class="pipe-node"><div class="pipe-node-icon pn-llm">🤖</div><div class="pipe-node-info"><div class="pn-title">Generate structured notes</div><div class="pn-sub">Airia LLM node → summary + decisions + actions + next steps</div></div><span class="pn-badge">claude-sonnet-4</span></div>
+      <div class="pipe-arrow">↓</div>
+      <div class="pipe-node"><div class="pipe-node-icon pn-out">✅</div><div class="pipe-node-info"><div class="pn-title">Extract action items</div><div class="pn-sub">Structured output node → [ { text, owner, priority } ]</div></div><span class="pn-badge">JSON schema</span></div>
+      <div class="pipe-arrow">↓</div>
+      <div class="pipe-node"><div class="pipe-node-icon pn-gmail">📧</div><div class="pipe-node-info"><div class="pn-title">Email digest (on demand)</div><div class="pn-sub">Gmail MCP → sends HTML digest to user's inbox</div></div><span class="pn-badge">gmail.mcp.claude.com</span></div>
+    </div>
+  </section>
+
+  <!-- Stack -->
+  <section id="stack" style="background:var(--s1); border-top:1px solid var(--bd); border-bottom:1px solid var(--bd);">
+    <div class="section-label">Tech stack</div>
+    <div class="section-title">Built with</div>
+    <div class="stack-grid" style="margin-top:32px;">
+      <div class="stack-pill"><span class="stack-dot" style="background:#5b8eff;"></span>Chrome Extension MV3</div>
+      <div class="stack-pill"><span class="stack-dot" style="background:#a78bfa;"></span>Airia Agent Pipeline</div>
+      <div class="stack-pill"><span class="stack-dot" style="background:#34d399;"></span>Claude Sonnet 4</div>
+      <div class="stack-pill"><span class="stack-dot" style="background:#4285F4;"></span>Google Calendar MCP</div>
+      <div class="stack-pill"><span class="stack-dot" style="background:#EA4335;"></span>Gmail MCP</div>
+      <div class="stack-pill"><span class="stack-dot" style="background:#fbbf24;"></span>Google Meet injection</div>
+      <div class="stack-pill"><span class="stack-dot" style="background:#a78bfa;"></span>Syne + DM Mono</div>
+      <div class="stack-pill"><span class="stack-dot" style="background:#5b8eff;"></span>Chrome Storage API</div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section>
+    <div class="cta-section">
+      <div style="font-size:52px;margin-bottom:16px;">◈</div>
+      <div style="font-family:var(--fh);font-size:32px;font-weight:800;margin-bottom:10px;letter-spacing:-1px;">Try MeetMind</div>
+      <p style="color:var(--mu);max-width:420px;margin:0 auto 28px;line-height:1.7;">Load the extension in Developer Mode and hit "Try with demo data" — no login required.</p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <a class="btn-hero btn-primary-hero" href="https://github.com" target="_blank">↓ Download ZIP</a>
+        <a class="btn-hero btn-ghost-hero" href="https://airia-hackathon.devpost.com" target="_blank">Devpost submission ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div>◈ MeetMind · Airia Hackathon 2025 · Track 1: Airia Everywhere</div>
+    <div style="display:flex;gap:20px;">
+      <a href="https://airia-hackathon.devpost.com">Devpost</a>
+      <a href="https://explore.airia.com">Airia Community</a>
+      <a href="https://github.com">GitHub</a>
+    </div>
+  </footer>
+
+</body>
+</html>

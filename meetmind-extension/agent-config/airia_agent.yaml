@@ -1,0 +1,125 @@
+# ─── MeetMind Airia Agent Configuration ──────────────────────────────────────
+# Publish this agent to the Airia Community for Track 1 hackathon submission.
+# Platform: Airia Everywhere (browser extension + calendar integration)
+# ─────────────────────────────────────────────────────────────────────────────
+
+agent:
+  name: MeetMind – Meeting Intelligence Agent
+  version: 1.0.0
+  description: |
+    MeetMind is a Track 1 "Airia Everywhere" agent that lives in your browser
+    as a Chrome extension. It connects to Google Calendar and Gmail, monitors
+    your scheduled meetings, and uses an Airia AI pipeline to automatically
+    generate structured meeting notes, extract key decisions, and surface
+    action items — all without leaving your workflow.
+
+  category: Productivity
+  tags:
+    - meetings
+    - calendar
+    - notes
+    - browser-extension
+    - track-1-airia-everywhere
+
+  # ── Integrations ──────────────────────────────────────────────────────────
+  integrations:
+    - name: Google Calendar
+      type: oauth2
+      scopes:
+        - https://www.googleapis.com/auth/calendar.readonly
+      mcp_server: gcal.mcp.claude.com
+      purpose: Fetch upcoming and past meeting events
+
+    - name: Gmail
+      type: oauth2
+      scopes:
+        - https://www.googleapis.com/auth/gmail.send
+      mcp_server: gmail.mcp.claude.com
+      purpose: Send action item digests and follow-up emails
+
+    - name: Google Meet
+      type: content_script
+      purpose: Inject live panel during meetings, capture key points
+
+  # ── Agent pipeline ─────────────────────────────────────────────────────────
+  pipeline:
+    steps:
+      - id: fetch_calendar
+        name: Fetch Calendar Events
+        type: integration_call
+        integration: Google Calendar
+        action: list_events
+        params:
+          time_range: today
+          max_results: 10
+
+      - id: classify_meeting
+        name: Classify Meeting Type
+        type: llm
+        model: claude-sonnet-4-20250514
+        prompt: |
+          Classify the following meeting based on its title and attendees.
+          Return one of: standup, planning, review, 1on1, external, all-hands
+
+      - id: generate_notes
+        name: Generate Structured Notes
+        type: llm
+        model: claude-sonnet-4-20250514
+        system_prompt: |
+          You are MeetMind, an expert meeting intelligence agent.
+          Generate structured meeting notes with: Summary, Key Decisions,
+          Action Items (with owners), and Next Steps.
+        temperature: 0.4
+
+      - id: extract_actions
+        name: Extract Action Items
+        type: llm_structured
+        model: claude-sonnet-4-20250514
+        output_schema:
+          type: array
+          items:
+            type: object
+            properties:
+              text: { type: string }
+              owner: { type: string }
+              due_date: { type: string, format: date }
+              priority: { type: string, enum: [high, medium, low] }
+
+      - id: send_digest
+        name: Email Action Digest
+        type: integration_call
+        integration: Gmail
+        action: send_email
+        trigger: on_demand
+        params:
+          subject: "MeetMind: Action items from {{meeting.title}}"
+          template: action_digest
+
+  # ── Constraints & governance ───────────────────────────────────────────────
+  constraints:
+    - Read-only access to calendar (no event creation/deletion)
+    - Gmail send-only (no read access to inbox)
+    - All data processed in-memory, not stored externally
+    - User must explicitly trigger note generation (no auto-recording)
+
+  # ── UI surface ─────────────────────────────────────────────────────────────
+  ui:
+    type: chrome_extension
+    popup: true
+    content_script:
+      inject_into:
+        - meet.google.com
+        - zoom.us
+        - teams.microsoft.com
+        - calendar.google.com
+    badge: meeting_count
+
+  # ── Deployment ─────────────────────────────────────────────────────────────
+  deployment:
+    target: chrome_web_store
+    manifest_version: 3
+    permissions:
+      - storage
+      - activeTab
+      - identity
+      - notifications

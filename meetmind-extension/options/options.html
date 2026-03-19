@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>MeetMind – Settings</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="options.css" />
+</head>
+<body>
+  <div class="page">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-mark">◈</span>
+        <span class="brand-text">MeetMind</span>
+      </div>
+      <nav>
+        <a class="nav-item active" data-section="connections">🔗 Connections</a>
+        <a class="nav-item" data-section="agent">🤖 Agent Config</a>
+        <a class="nav-item" data-section="preferences">⚙ Preferences</a>
+        <a class="nav-item" data-section="about">◈ About</a>
+      </nav>
+      <div class="sidebar-footer">v1.0.0 · Airia Hackathon 2025</div>
+    </aside>
+
+    <main class="main">
+
+      <!-- Connections -->
+      <section class="section active" id="section-connections">
+        <h1>Connections</h1>
+        <p class="desc">Connect MeetMind to your calendar and email to enable automatic note generation and action item delivery.</p>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="service-icon google">G</div>
+            <div>
+              <div class="card-title">Google Account</div>
+              <div class="card-sub">Calendar (read) + Gmail (send)</div>
+            </div>
+            <div class="badge" id="googleBadge">Not connected</div>
+          </div>
+          <div class="card-body">
+            <p class="card-desc">MeetMind needs read access to Google Calendar to see your meetings, and send access to Gmail to deliver action item digests.</p>
+            <div class="btn-row">
+              <button class="btn btn-primary" id="btnGoogleConnect">Connect Google</button>
+              <button class="btn btn-ghost hidden" id="btnGoogleDisconnect">Disconnect</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="service-icon airia">A</div>
+            <div>
+              <div class="card-title">Airia Workspace</div>
+              <div class="card-sub">Agent pipeline endpoint</div>
+            </div>
+            <div class="badge" id="airiaStatus">Not configured</div>
+          </div>
+          <div class="card-body">
+            <label class="field-label">Airia Agent Endpoint URL</label>
+            <input type="url" id="airiaEndpoint" class="input" placeholder="https://your-workspace.airia.com/v1/agent/meetmind" />
+            <label class="field-label" style="margin-top:12px;">Anthropic API Key (fallback)</label>
+            <div class="input-row">
+              <input type="password" id="anthropicKey" class="input" placeholder="sk-ant-…" />
+              <button class="btn btn-ghost sm" id="toggleKey">Show</button>
+            </div>
+            <div class="btn-row" style="margin-top:12px;">
+              <button class="btn btn-primary" id="btnSaveAiria">Save & test</button>
+              <span class="test-result hidden" id="testResult"></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Agent Config -->
+      <section class="section" id="section-agent">
+        <h1>Agent Config</h1>
+        <p class="desc">Tune how the MeetMind Airia agent generates your meeting notes.</p>
+
+        <div class="card">
+          <div class="card-header" style="align-items:flex-start;">
+            <div>
+              <div class="card-title">Note format</div>
+              <div class="card-sub">What sections appear in generated notes</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="toggle-row">
+              <div>
+                <div class="toggle-label">Executive summary</div>
+                <div class="toggle-sub">2-3 sentence overview of the meeting</div>
+              </div>
+              <label class="toggle"><input type="checkbox" checked id="chkSummary" /><span class="slider"></span></label>
+            </div>
+            <div class="toggle-row">
+              <div>
+                <div class="toggle-label">Key decisions</div>
+                <div class="toggle-sub">Decisions made during the meeting</div>
+              </div>
+              <label class="toggle"><input type="checkbox" checked id="chkDecisions" /><span class="slider"></span></label>
+            </div>
+            <div class="toggle-row">
+              <div>
+                <div class="toggle-label">Action items</div>
+                <div class="toggle-sub">Tasks with assigned owners</div>
+              </div>
+              <label class="toggle"><input type="checkbox" checked id="chkActions" /><span class="slider"></span></label>
+            </div>
+            <div class="toggle-row">
+              <div>
+                <div class="toggle-label">Next steps</div>
+                <div class="toggle-sub">Follow-up schedule and deadlines</div>
+              </div>
+              <label class="toggle"><input type="checkbox" checked id="chkNext" /><span class="slider"></span></label>
+            </div>
+            <div class="toggle-row">
+              <div>
+                <div class="toggle-label">Sentiment analysis</div>
+                <div class="toggle-sub">Meeting tone and engagement signals</div>
+              </div>
+              <label class="toggle"><input type="checkbox" id="chkSentiment" /><span class="slider"></span></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">AI model</div>
+              <div class="card-sub">Which model the Airia agent uses</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <select class="input" id="modelSelect">
+              <option value="claude-sonnet-4-20250514" selected>Claude Sonnet 4 (recommended)</option>
+              <option value="claude-opus-4-5">Claude Opus 4.5 (most capable)</option>
+              <option value="claude-haiku-4-5-20251001">Claude Haiku 4.5 (fastest)</option>
+            </select>
+            <div class="btn-row" style="margin-top:12px;">
+              <button class="btn btn-primary" id="btnSaveAgent">Save preferences</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Preferences -->
+      <section class="section" id="section-preferences">
+        <h1>Preferences</h1>
+        <p class="desc">Control how and when MeetMind shows up in your browser.</p>
+
+        <div class="card">
+          <div class="card-header"><div><div class="card-title">Notifications</div></div></div>
+          <div class="card-body">
+            <div class="toggle-row">
+              <div>
+                <div class="toggle-label">Meeting reminders</div>
+                <div class="toggle-sub">Notify me 5 minutes before a meeting</div>
+              </div>
+              <label class="toggle"><input type="checkbox" checked id="chkRemind" /><span class="slider"></span></label>
+            </div>
+            <div class="toggle-row">
+              <div>
+                <div class="toggle-label">Notes ready alert</div>
+                <div class="toggle-sub">Notify when AI notes finish generating</div>
+              </div>
+              <label class="toggle"><input type="checkbox" checked id="chkNotesReady" /><span class="slider"></span></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><div><div class="card-title">In-meeting overlay</div></div></div>
+          <div class="card-body">
+            <div class="toggle-row">
+              <div>
+                <div class="toggle-label">Show on Google Meet</div>
+                <div class="toggle-sub">Floating MeetMind panel during calls</div>
+              </div>
+              <label class="toggle"><input type="checkbox" checked id="chkMeet" /><span class="slider"></span></label>
+            </div>
+            <div class="toggle-row">
+              <div>
+                <div class="toggle-label">Show on Zoom</div>
+                <div class="toggle-sub">Floating panel on zoom.us pages</div>
+              </div>
+              <label class="toggle"><input type="checkbox" checked id="chkZoom" /><span class="slider"></span></label>
+            </div>
+            <div class="toggle-row">
+              <div>
+                <div class="toggle-label">Auto-start note generation</div>
+                <div class="toggle-sub">Begin generating when meeting ends (no confirmation)</div>
+              </div>
+              <label class="toggle"><input type="checkbox" id="chkAutoGen" /><span class="slider"></span></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><div><div class="card-title">Data & privacy</div></div></div>
+          <div class="card-body">
+            <p class="card-desc">MeetMind processes all data in-memory. No meeting content is stored on external servers. Notes are saved locally in Chrome storage only.</p>
+            <div class="btn-row" style="margin-top:12px;">
+              <button class="btn btn-danger" id="btnClearData">Clear all local data</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- About -->
+      <section class="section" id="section-about">
+        <h1>About MeetMind</h1>
+        <div class="card">
+          <div class="card-body" style="text-align:center; padding: 28px 20px;">
+            <div style="font-size:56px; margin-bottom:12px;">◈</div>
+            <div style="font-family:var(--fh); font-size:24px; font-weight:800; margin-bottom:6px;">MeetMind</div>
+            <div style="color:var(--mu); margin-bottom:18px;">v1.0.0 · Airia Hackathon 2025</div>
+            <p style="color:var(--mu); max-width:360px; margin:0 auto 18px; line-height:1.7;">
+              Track 1: Airia Everywhere — A Chrome extension that brings AI-powered meeting intelligence to your browser, powered by Airia agent pipelines.
+            </p>
+            <div class="pill-row">
+              <span class="pill">🏆 Airia Hackathon 2025</span>
+              <span class="pill">📍 Track 1: Airia Everywhere</span>
+              <span class="pill">🤖 Claude Sonnet 4</span>
+            </div>
+            <div style="margin-top:20px;">
+              <a class="btn btn-outline" href="https://airia-hackathon.devpost.com" target="_blank">View on Devpost</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Save toast -->
+      <div class="toast hidden" id="toast">✓ Settings saved</div>
+    </main>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>
